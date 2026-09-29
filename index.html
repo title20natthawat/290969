@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ถึงคนพิเศษ</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&family=Charm:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#fff1f4;--bg2:#fde4ec;--ink:#7a3b52;--pink:#f4a6bd;--rose:#e9799c;--paper:#fffaf6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#fff1f4;--bg2:#fde4ec}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:'Mali','Charm',sans-serif;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--ink);overflow:hidden;display:flex;align-items:center;justify-content:center}
+#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.h{position:absolute;top:-40px;animation:fall linear forwards;opacity:.7}
+@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+.stage{position:relative;width:100%;max-width:420px;padding:20px;text-align:center;z-index:2}
+.step{display:none}
+.step.on{display:block;animation:pop .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:none}}
+.hint{margin-top:18px;font-size:15px;opacity:.75;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+
+/* envelope */
+.env{position:relative;width:260px;height:170px;margin:0 auto;cursor:pointer;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 12px 18px rgba(233,121,156,.35))}
+@keyframes float{50%{transform:translateY(-10px) rotate(-1.5deg)}}
+.env .body{position:absolute;inset:0;background:var(--pink);border-radius:8px}
+.env .flap{position:absolute;left:0;right:0;top:0;height:100px;background:var(--rose);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .7s;z-index:3;border-radius:8px 8px 0 0}
+.env .front{position:absolute;inset:0;background:#f8bfd0;clip-path:polygon(0 100%,0 30%,50% 65%,100% 30%,100% 100%);border-radius:8px;z-index:2}
+.env .paper{position:absolute;left:14px;right:14px;top:14px;height:130px;background:var(--paper);border-radius:6px;z-index:1;transition:transform .8s}
+.env .seal{position:absolute;left:50%;top:78px;transform:translate(-50%,-50%);font-size:34px;z-index:4;transition:opacity .3s;animation:beat 1.2s infinite}
+@keyframes beat{50%{transform:translate(-50%,-50%) scale(1.2)}}
+.env.open .flap{transform:rotateX(180deg);z-index:0}
+.env.open .seal{opacity:0}
+.env.open .paper{transform:translateY(-70px)}
+.env.close .flap{transform:rotateX(0)}
+
+/* card */
+.card{background:var(--paper);border-radius:22px;padding:28px 24px;cursor:pointer;box-shadow:0 14px 34px rgba(233,121,156,.35);border:3px dashed var(--pink);position:relative}
+.card.tilt{animation:sway 4s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(1.5deg)}}
+.card h1{font-family:'Charm','Mali',cursive;font-size:36px;margin:0 0 12px;color:var(--rose)}
+.card p{font-size:18px;line-height:1.8;margin:0;min-height:5.4em}
+.card .cur::after{content:"|";animation:blink .8s infinite}
+.card img{width:100%;max-height:230px;object-fit:cover;border-radius:14px;margin:12px 0;border:4px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.12);transform:rotate(-2deg)}
+.sticker{margin-top:18px;font-size:54px;display:flex;justify-content:center;gap:18px}
+.sticker span{display:inline-block;animation:hop 1s ease-in-out infinite}
+.sticker span:nth-child(2){animation-delay:.2s;animation-name:wiggle}
+.sticker span:nth-child(3){animation-delay:.4s}
+@keyframes hop{50%{transform:translateY(-16px) scale(1.1)}}
+@keyframes wiggle{25%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}
+.card.shrink{animation:shrink 1s forwards}
+@keyframes shrink{to{transform:translateY(160px) scale(.15) rotate(8deg);opacity:0}}
+.end{font-size:20px;margin-top:20px;opacity:0;transition:opacity 1s}
+.end.show{opacity:1}
+@media (prefers-reduced-motion:reduce){.h{display:none}.env,.sticker span,.card.tilt{animation:none}}
+</style>
+</head>
+<body>
+<div id="hearts"></div>
+<div class="stage">
+
+  <div class="step on" id="s1">
+    <div class="env" id="env"><div class="body"></div><div class="paper"></div><div class="front"></div><div class="flap"></div><div class="seal">💌</div></div>
+    <div class="hint">แตะที่จดหมายเพื่อเปิดอ่าน</div>
+  </div>
+
+  <div class="step" id="s2">
+    <div class="card tilt" id="c2">
+      <h1>ถึงคนพิเศษ 💖</h1>
+      <p id="txt"></p>
+    </div>
+    <div class="sticker"><span>🐰</span><span>🧸</span><span>🐥</span></div>
+    <div class="hint">แตะที่การ์ดเพื่อไปต่อ</div>
+  </div>
+
+  <div class="step" id="s3">
+    <div class="card" id="c3">
+      <h1>ขอบคุณที่อยู่ข้างกัน</h1>
+      <img id="photo" alt="รูปภาพพิเศษ" src="">
+      <p style="min-height:0">ทุกวันมีเธอ ก็เป็นวันที่ดีที่สุดเลย 🌷</p>
+    </div>
+    <div class="hint">แตะเพื่อเก็บใส่ซอง</div>
+  </div>
+
+  <div class="step" id="s4">
+    <div class="card" id="c4" style="cursor:default"><h1>💗</h1><p style="min-height:0">เก็บไว้ในใจเสมอ</p></div>
+    <div class="env" id="env2" style="margin-top:-20px;animation:none"><div class="body"></div><div class="paper"></div><div class="front"></div><div class="flap" style="transform:rotateX(180deg);z-index:0"></div><div class="seal" style="opacity:0">💌</div></div>
+    <div class="end" id="end">รักนะ 💕 แตะเพื่ออ่านอีกครั้ง</div>
+  </div>
+</div>
+
+<script>
+/* ===== แก้ข้อความ/รูปตรงนี้ ===== */
+const MESSAGE = "ขอบคุณที่เป็นคนน่ารักของฉันเสมอ\nไม่ว่าวันไหนจะเหนื่อยแค่ไหน\nแค่ได้คิดถึงเธอ ก็ยิ้มได้ทุกที 💕";
+const PHOTO = "data:image/svg+xml;utf8," + encodeURIComponent(
+ '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd6e2"/><stop offset="1" stop-color="#ffb3c8"/></linearGradient></defs><rect width="400" height="260" fill="url(#g)"/><text x="200" y="150" font-size="90" text-anchor="middle">💑</text><text x="200" y="230" font-size="18" text-anchor="middle" fill="#7a3b52">ใส่รูปของเราตรงนี้</text></svg>');
+/* ใส่รูปจริง: เปลี่ยน PHOTO เป็น data:image/... ที่แปลงจากรูปของคุณ */
+/* ================================ */
+
+const $=id=>document.getElementById(id);
+const hearts=$('hearts'), symbols=['💗','💖','💕','🩷','❤️'];
+function drop(){
+  const e=document.createElement('div');e.className='h';
+  e.textContent=symbols[Math.random()*symbols.length|0];
+  const d=6+Math.random()*6;
+  e.style.cssText=`left:${Math.random()*100}%;font-size:${12+Math.random()*20}px;animation-duration:${d}s;--dx:${Math.random()*80-40}px;--r:${Math.random()*360-180}deg`;
+  hearts.appendChild(e);setTimeout(()=>e.remove(),d*1000);
+}
+setInterval(drop,350);for(let i=0;i<10;i++)setTimeout(drop,i*120);
+
+function go(n){document.querySelectorAll('.step').forEach(s=>s.classList.remove('on'));$('s'+n).classList.add('on')}
+let typing;
+function type(){
+  const el=$('txt');el.textContent='';el.classList.add('cur');let i=0;clearInterval(typing);
+  typing=setInterval(()=>{el.textContent=MESSAGE.slice(0,++i);el.style.whiteSpace='pre-line';if(i>=MESSAGE.length){clearInterval(typing);el.classList.remove('cur')}},70);
+}
+let busy=false;
+$('env').onclick=()=>{ if(busy)return;busy=true;$('env').classList.add('open');
+  setTimeout(()=>{go(2);type();busy=false;$('env').classList.remove('open')},900)};
+$('c2').onclick=()=>{clearInterval(typing);$('photo').src=PHOTO;go(3)};
+$('c3').onclick=()=>{
+  go(4);const c=$('c4'),end=$('end');c.classList.remove('shrink');end.classList.remove('show');
+  void c.offsetWidth;setTimeout(()=>c.classList.add('shrink'),300);
+  setTimeout(()=>end.classList.add('show'),1500);
+};
+$('end').onclick=()=>{$('end').classList.remove('show');go(1)};
+$('end').style.cursor='pointer';
+</script>
+</body>
+</html>
