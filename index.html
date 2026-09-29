@@ -4,21 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ถึงคนพิเศษ</title>
-<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&family=Charm:wght@700&display=swap" rel="stylesheet">
+<!-- เปลี่ยน Font ให้คล้ายในวิดีโอ: เรียบหรูและอ่านง่าย -->
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg1:#fff1f4;--bg2:#fde4ec;--ink:#7a3b52;--pink:#f4a6bd;--rose:#e9799c;--paper:#fffaf6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg1:#fff1f4;--bg2:#fde4ec;--ink:#5a4a4e;--pink:#f4a6bd;--rose:#e9799c;--paper:#fcf8f9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#fff1f4;--bg2:#fde4ec}}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font-family:'Mali','Charm',sans-serif;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--ink);overflow:hidden;display:flex;align-items:center;justify-content:center}
-#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-.h{position:absolute;top:-40px;animation:fall linear forwards;opacity:.7}
-@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+body{font-family:'Prompt',sans-serif;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--ink);overflow:hidden;display:flex;align-items:center;justify-content:center}
+
+/* Floating Hearts */
+#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:99}
+.h{position:absolute;bottom:-40px;animation:floatUp linear forwards;opacity:.8}
+@keyframes floatUp{to{transform:translate(var(--dx),-110vh) scale(var(--s)) rotate(var(--r));opacity:0}}
+
 .stage{position:relative;width:100%;max-width:420px;padding:20px;text-align:center;z-index:2}
 .step{display:none}
 .step.on{display:block;animation:pop .6s cubic-bezier(.2,1.4,.4,1)}
 @keyframes pop{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:none}}
-.hint{margin-top:18px;font-size:15px;opacity:.75;animation:blink 1.6s infinite}
+.hint{margin-top:18px;font-size:14px;color:#a88;opacity:.75;animation:blink 1.6s infinite}
 @keyframes blink{50%{opacity:.25}}
 
 /* envelope */
@@ -35,25 +39,52 @@ body{font-family:'Mali','Charm',sans-serif;background:linear-gradient(160deg,var
 .env.open .paper{transform:translateY(-70px)}
 .env.close .flap{transform:rotateX(0)}
 
-/* card */
-.card{background:var(--paper);border-radius:22px;padding:28px 24px;cursor:pointer;box-shadow:0 14px 34px rgba(233,121,156,.35);border:3px dashed var(--pink);position:relative}
-.card.tilt{animation:sway 4s ease-in-out infinite}
-@keyframes sway{50%{transform:rotate(1.5deg)}}
-.card h1{font-family:'Charm','Mali',cursive;font-size:36px;margin:0 0 12px;color:var(--rose)}
-.card p{font-size:18px;line-height:1.8;margin:0;min-height:5.4em}
+/* card แบบใหม่ตามวิดีโอ */
+.card{background:var(--paper);border-radius:12px;padding:30px 24px 20px;cursor:pointer;box-shadow:0 12px 30px rgba(233,121,156,.25);position:relative;text-align:left;}
+.card .close-btn{position:absolute;top:12px;right:16px;color:#bba7ac;font-family:sans-serif;font-size:14px;font-weight:bold;}
+.card.tilt{animation:sway 5s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(1deg)}}
+
+/* ข้อความในการ์ด 1 */
+.card h1{font-family:'Lora',serif;font-size:18px;margin:0 0 12px;color:#a87d8a;font-weight:600;letter-spacing:0.5px}
+.card p{font-size:14px;line-height:1.7;margin:0;min-height:9em;color:var(--ink);font-weight:300}
 .card .cur::after{content:"|";animation:blink .8s infinite}
-.card img{width:100%;max-height:230px;object-fit:cover;border-radius:14px;margin:12px 0;border:4px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.12);transform:rotate(-2deg)}
-.sticker{margin-top:18px;font-size:54px;display:flex;justify-content:center;gap:18px}
-.sticker span{display:inline-block;animation:hop 1s ease-in-out infinite}
-.sticker span:nth-child(2){animation-delay:.2s;animation-name:wiggle}
-.sticker span:nth-child(3){animation-delay:.4s}
-@keyframes hop{50%{transform:translateY(-16px) scale(1.1)}}
-@keyframes wiggle{25%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}
+
+/* สติ๊กเกอร์ด้านล่างการ์ด 1 */
+.sticker-bottom {text-align:center;margin-top:16px;font-size:36px;}
+.sticker-bottom span{display:inline-block;animation:hop 1.5s ease-in-out infinite}
+
+/* การ์ด 2: Music Player */
+#c3 {text-align:center;padding:20px;}
+#c3 h1 {font-family:'Prompt',sans-serif;font-size:14px;color:#a87d8a;margin-bottom:12px;}
+#c3 img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;margin:0;box-shadow:0 4px 10px rgba(0,0,0,.08);}
+.music-bar {display:flex;justify-content:space-between;align-items:center;background:#fff;padding:10px 16px;border-radius:20px;margin-top:16px;box-shadow:0 2px 8px rgba(200,150,160,.15);}
+.music-bar .now-playing {font-size:12px;color:#888;display:flex;align-items:center;gap:6px;}
+.music-bar .now-playing span {font-size:16px;}
+.audio-waves {display:flex;gap:3px;align-items:center;height:16px;}
+.audio-waves span {display:block;width:3px;background:var(--rose);border-radius:2px;animation:wave 1s ease-in-out infinite;}
+.audio-waves span:nth-child(1) { height:8px; animation-delay:0.1s; }
+.audio-waves span:nth-child(2) { height:14px; animation-delay:0.3s; }
+.audio-waves span:nth-child(3) { height:10px; animation-delay:0.5s; }
+.audio-waves span:nth-child(4) { height:16px; animation-delay:0.2s; }
+@keyframes wave { 50% {height:4px;} }
+
+@keyframes hop{50%{transform:translateY(-8px) scale(1.05)}}
 .card.shrink{animation:shrink 1s forwards}
 @keyframes shrink{to{transform:translateY(160px) scale(.15) rotate(8deg);opacity:0}}
-.end{font-size:20px;margin-top:20px;opacity:0;transition:opacity 1s}
+.end{font-size:18px;margin-top:20px;opacity:0;transition:opacity 1s;font-weight:400;color:#a87d8a}
 .end.show{opacity:1}
-@media (prefers-reduced-motion:reduce){.h{display:none}.env,.sticker span,.card.tilt{animation:none}}
+
+/* ลูกเล่นโชว์หน้าการ์ดให้ช้าลงและมีมิติเด้งดึ๋ง */
+#s2.step.on, #s3.step.on {
+  animation: slowPop 1.2s cubic-bezier(0.2, 1.2, 0.5, 1) forwards;
+  transform-origin: center bottom;
+}
+@keyframes slowPop {
+  0% { opacity: 0; transform: translateY(60px) scale(0.6) rotate(-5deg); }
+  60% { opacity: 1; transform: translateY(-10px) scale(1.02) rotate(2deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
+}
 </style>
 </head>
 <body>
@@ -62,70 +93,108 @@ body{font-family:'Mali','Charm',sans-serif;background:linear-gradient(160deg,var
 
   <div class="step on" id="s1">
     <div class="env" id="env"><div class="body"></div><div class="paper"></div><div class="front"></div><div class="flap"></div><div class="seal">💌</div></div>
-    <div class="hint">แตะที่จดหมายเพื่อเปิดอ่าน</div>
+    <div class="hint">แตะที่ซองจดหมาย</div>
   </div>
 
   <div class="step" id="s2">
     <div class="card tilt" id="c2">
-      <h1>ถึงคนพิเศษ 💖</h1>
+      <div class="close-btn">X</div>
+      <h1>Happy birthday to my<br>super-duper sweetheart.</h1>
       <p id="txt"></p>
+      <div class="sticker-bottom" id="sticker" style="opacity:0; transition: opacity 1s;"><span>💕🐻</span></div>
     </div>
-    <div class="sticker"><span>🐰</span><span>🧸</span><span>🐥</span></div>
     <div class="hint">แตะที่การ์ดเพื่อไปต่อ</div>
   </div>
 
   <div class="step" id="s3">
     <div class="card" id="c3">
-      <h1>ขอบคุณที่อยู่ข้างกัน</h1>
-      <img id="photo" alt="รูปภาพพิเศษ" src="">
-      <p style="min-height:0">ทุกวันมีเธอ ก็เป็นวันที่ดีที่สุดเลย 🌷</p>
+      <div class="close-btn">X</div>
+      <h1>❤️ love u to the moon and back</h1>
+      <img id="photo" src="https://s.imgz.io/2026/09/29/S__43212803b78435356d872523.jpg" alt="รูปภาพพิเศษ" border="0">
+      <div class="music-bar">
+        <div class="now-playing"><span>🎵</span> Now Playing</div>
+        <div class="audio-waves">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      
     </div>
     <div class="hint">แตะเพื่อเก็บใส่ซอง</div>
   </div>
 
   <div class="step" id="s4">
-    <div class="card" id="c4" style="cursor:default"><h1>💗</h1><p style="min-height:0">เก็บไว้ในใจเสมอ</p></div>
+    <div class="card" id="c4" style="cursor:default; text-align:center; padding:30px">
+      <h1 style="font-size:40px; margin-bottom:10px">💗</h1>
+      <p style="min-height:0; text-align:center">เก็บไว้ในใจเสมอ</p>
+    </div>
     <div class="env" id="env2" style="margin-top:-20px;animation:none"><div class="body"></div><div class="paper"></div><div class="front"></div><div class="flap" style="transform:rotateX(180deg);z-index:0"></div><div class="seal" style="opacity:0">💌</div></div>
-    <div class="end" id="end">รักนะ 💕 แตะเพื่ออ่านอีกครั้ง</div>
+    <div class="end" id="end">ทำด้วยใจล้วนๆ ✨ แตะเพื่อดูอีกรอบ</div>
   </div>
 </div>
 
 <script>
 /* ===== แก้ข้อความ/รูปตรงนี้ ===== */
-const MESSAGE = "ขอบคุณที่เป็นคนน่ารักของฉันเสมอ\nไม่ว่าวันไหนจะเหนื่อยแค่ไหน\nแค่ได้คิดถึงเธอ ก็ยิ้มได้ทุกที 💕";
-const PHOTO = "data:image/svg+xml;utf8," + encodeURIComponent(
- '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd6e2"/><stop offset="1" stop-color="#ffb3c8"/></linearGradient></defs><rect width="400" height="260" fill="url(#g)"/><text x="200" y="150" font-size="90" text-anchor="middle">💑</text><text x="200" y="230" font-size="18" text-anchor="middle" fill="#7a3b52">ใส่รูปของเราตรงนี้</text></svg>');
-/* ใส่รูปจริง: เปลี่ยน PHOTO เป็น data:image/... ที่แปลงจากรูปของคุณ */
+const MESSAGE = "ขอให้วันเกิดปีนี้มีแต่ความสุข\nความทรงจำดีๆ\nและขอให้ทุกความปรารถนาของเธอเป็นจริง\n\nYou are the reason I smile every day,\nand I'm so lucky to have you. Love you\nalways, and forever.\n\nขอบคุณที่อยู่ด้วยกันเสมอนะ!";
+const PHOTO = "https://s.imgz.io/2026/09/29/S__43212803b78435356d872523.jpg";
 /* ================================ */
 
 const $=id=>document.getElementById(id);
 const hearts=$('hearts'), symbols=['💗','💖','💕','🩷','❤️'];
+
+// ทำให้หัวใจลอยขึ้นข้างบนแบบนุ่มนวล
 function drop(){
   const e=document.createElement('div');e.className='h';
   e.textContent=symbols[Math.random()*symbols.length|0];
-  const d=6+Math.random()*6;
-  e.style.cssText=`left:${Math.random()*100}%;font-size:${12+Math.random()*20}px;animation-duration:${d}s;--dx:${Math.random()*80-40}px;--r:${Math.random()*360-180}deg`;
+  const d=4+Math.random()*4;
+  e.style.cssText=`left:${Math.random()*100}%;font-size:${14+Math.random()*16}px;animation-duration:${d}s;--dx:${Math.random()*60-30}px;--s:${0.5+Math.random()};--r:${Math.random()*360}deg`;
   hearts.appendChild(e);setTimeout(()=>e.remove(),d*1000);
 }
-setInterval(drop,350);for(let i=0;i<10;i++)setTimeout(drop,i*120);
+setInterval(drop,400);for(let i=0;i<10;i++)setTimeout(drop,i*150);
+
+// แอนิเมชันตอนเปิดซองให้หัวใจพุ่งออกมา
+function burstHearts() {
+  for(let i=0; i<15; i++) {
+    setTimeout(()=>{
+      const e=document.createElement('div');e.className='h';
+      e.textContent=symbols[Math.random()*symbols.length|0];
+      e.style.cssText=`left:50%;bottom:30%;font-size:${16+Math.random()*20}px;animation:floatUp 1.5s ease-out forwards;--dx:${Math.random()*200-100}px;--s:${0.8+Math.random()};--r:${Math.random()*360}deg`;
+      hearts.appendChild(e);setTimeout(()=>e.remove(),1500);
+    }, i*50);
+  }
+}
 
 function go(n){document.querySelectorAll('.step').forEach(s=>s.classList.remove('on'));$('s'+n).classList.add('on')}
 let typing;
 function type(){
-  const el=$('txt');el.textContent='';el.classList.add('cur');let i=0;clearInterval(typing);
-  typing=setInterval(()=>{el.textContent=MESSAGE.slice(0,++i);el.style.whiteSpace='pre-line';if(i>=MESSAGE.length){clearInterval(typing);el.classList.remove('cur')}},70);
+  const el=$('txt');el.textContent='';el.classList.add('cur');let i=0;clearInterval(typing);$('sticker').style.opacity = 0; // ซ่อนสติ๊กเกอร์ก่อน
+  typing=setInterval(()=>{
+    el.textContent=MESSAGE.slice(0,++i);
+    el.style.whiteSpace='pre-line';
+    if(i>=MESSAGE.length){
+        clearInterval(typing);
+        el.classList.remove('cur');
+        $('sticker').style.opacity = 1; // โชว์สติ๊กเกอร์ตอนพิมพ์จบ
+    }
+  },50);
 }
+
 let busy=false;
-$('env').onclick=()=>{ if(busy)return;busy=true;$('env').classList.add('open');
-  setTimeout(()=>{go(2);type();busy=false;$('env').classList.remove('open')},900)};
+$('env').onclick=()=>{ 
+  if(busy)return;busy=true;
+  $('env').classList.add('open');
+  burstHearts(); // พลุหัวใจตอนเปิด
+  setTimeout(()=>{go(2);type();busy=false;$('env').classList.remove('open')},1000);
+};
+
 $('c2').onclick=()=>{clearInterval(typing);$('photo').src=PHOTO;go(3)};
+
 $('c3').onclick=()=>{
   go(4);const c=$('c4'),end=$('end');c.classList.remove('shrink');end.classList.remove('show');
-  void c.offsetWidth;setTimeout(()=>c.classList.add('shrink'),300);
+  void c.offsetWidth;setTimeout(()=>c.classList.add('shrink'),400);
   setTimeout(()=>end.classList.add('show'),1500);
 };
-$('end').onclick=()=>{$('end').classList.remove('show');go(1)};
-$('end').style.cursor='pointer';
+
+$('end').onclick=()=>{$('end').classList.remove('show');go(1)};$('end').style.cursor='pointer';
 </script>
 </body>
 </html>
